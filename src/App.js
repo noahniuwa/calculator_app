@@ -1,33 +1,39 @@
-import React from 'react';
+import React from 'react'
 import Button from './Button'
-import './App.scss';
+import Ticker from './Ticker'
+import './App.scss'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div id="numbersContainer">
-          <div class="row">
-            <Button name="1" />
-            <Button name="2" />
-            <Button name="3" />
-          </div>
-          <div class="row">
-            <Button name="4" />
-            <Button name="5" />
-            <Button name="6" /> 
-          </div>
-          <div class="row">
-            <Button name="7" />
-            <Button name="8" />
-            <Button name="9" />
-          </div>
-          <Button name="0" />
-        </div>
-       
-      </header>
-    </div>
-  );
+let axios = require('axios')
+
+
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state ={
+      currentPrice: 0,
+    }
+    this.getPrice = this.getPrice.bind(this)
+  }
+
+  async getPrice() {
+      let response = await axios
+    .get("https://api.nomics.com/v1/currencies/ticker?key=1cbb1eb31f0666dda3add45368c82618&ids=BTC&interval=1d,30d&convert=USD")
+    this.setState({currentPrice: response.data[0].price})
+  }
+  componentDidMount(){
+    this.interval = setInterval(this.getPrice, 100);
+  }
+
+  render() {
+    return(
+      <div className="App">
+        <header className="App-header">
+           <Ticker name={this.state.currentPrice} />
+        </header>
+      </div>
+    );
+  }
+  
 }
 
 export default App;

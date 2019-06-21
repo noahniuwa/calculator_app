@@ -3,29 +3,30 @@ import Ticker from './Ticker'
 import './App.scss'
 
 let axios = require('axios')
+let url = "https://cors-anywhere.herokuapp.com/" + "https://api.coinmarketcap.com/v1/ticker/bitcoin/"
 
 
 class App extends React.Component {
   constructor(){
     super()
     this.state ={
-      currentPrice: 0,
+      currentPrice: "loading",
     }
     this.getPrice = this.getPrice.bind(this)
   }
 
   getPrice() {
-    let url = "https://cors-anywhere.herokuapp.com/" + "https://api.nomics.com/v1/currencies/ticker?key=1cbb1eb31f0666dda3add45368c82618&ids=BTC&interval=1d,30d&convert=USD"
     axios({
       method: 'get',
       url: url,
-      headers: {'Origin': 'https://api.nomics.com'}
-    }).then(response => this.setState({currentPrice: response.data[0].price}))
+      headers: {'Origin': 'https://api.coinmarketcap.com'}
+    }).then(response => this.setState({currentPrice: response.data[0].price_usd}))
   }
 
 
   componentDidMount(){
-    this.interval = setInterval(this.getPrice, 30000);
+    this.getPrice()
+    this.interval = setInterval(this.getPrice, 15000);
   }
 
   render() {

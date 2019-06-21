@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Test(){
+function Test(props){
   return(
     <div>
-      This is a component I made for testing
+      Test text is: {props.text}
     </div>  
   )
 }

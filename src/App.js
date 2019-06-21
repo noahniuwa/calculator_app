@@ -26,7 +26,7 @@ class App extends React.Component {
 
   componentDidMount(){
     this.getPrice()
-    this.interval = setInterval(this.getPrice, 15000);
+    this.interval = setInterval(this.getPrice, 30000);
   }
 
   render() {
